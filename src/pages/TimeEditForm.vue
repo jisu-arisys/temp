@@ -75,9 +75,9 @@
           <input type="time" class="form-control" v-model="businessHours.monday.closingTime" :readonly="businessHours.monday.isHoly">
         </div>
         &nbsp;
-        <time-radio-input id="monday" @hours="setHolyHours"
+        <time-radio id="monday" @hours="setHolyHours"
         :openingTime="businessHours.monday.openingTime" :closingTime="businessHours.monday.closingTime"
-        ></time-radio-input>
+        ></time-radio>
       </div>
 
       <div class="row">
@@ -90,9 +90,9 @@
           <input type="time" class="form-control" v-model="businessHours.saturday.closingTime" :readonly="businessHours.saturday.isHoly">
         </div>
         &nbsp;
-        <time-radio-input id="saturday" @hours="setHolyHours"
+        <time-radio id="saturday" @hours="setHolyHours"
         :openingTime="businessHours.saturday.openingTime" :closingTime="businessHours.saturday.closingTime"
-        ></time-radio-input>
+        ></time-radio>
       </div>
 
       <div class="row">
@@ -123,7 +123,7 @@
       </div>
       <div class="text-center">
         <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="validateAndSubmit">
-          Update Profile
+          Update
         </button>
       </div>
       <div class="clearfix"></div>
