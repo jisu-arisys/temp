@@ -16,6 +16,7 @@
     "bootstrap": "4.6.0",
     "cache-loader": "^4.1.0",
     "chartist": "0.11.0",
+    "dayjs": "^1.11.10",
     "google-maps": "3.2.1",
     "register-service-worker": "1.7.2",
     "v-tooltip": "2.0.0-rc.33",

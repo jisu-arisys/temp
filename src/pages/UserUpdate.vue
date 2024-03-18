@@ -46,22 +46,38 @@ export default {
       lastName: "",
       emailId: "",
       errors: [],
+      tableData: [
+        { id: 1, 사용자id: 'admin', 사용자명: '관리자' },
+        { id: 2, 사용자id: 'test1', 사용자명: '테스터' },
+        { id: 3, 사용자id: 'test2', 사용자명: '테스터2' },
+        { id: 4, 사용자id: 'test3', 사용자명: '테스터3' },
+        { id: 5, 사용자id: 'user', 사용자명: '사용자' }
+      ],
     };
   },
   computed: {
     id() {
-      // return this.$route.params.id;
-      return -1
+      // console.log(this.$route.params.id);
+      return this.$route.params.id;
     },
   },
   methods: {
-    // refreshUserDetails() {
-    //   UserDataService.retrieveUser(this.id).then((res) => {
-    //     this.firstName = res.data.firstName;
-    //     this.lastName = res.data.lastName;
-    //     this.emailId = res.data.emailId;
-    //   });
-    // },
+    refreshUserDetails() {
+      //   UserDataService.retrieveUser(this.id).then((res) => {
+      //     this.firstName = res.data.firstName;
+      //     this.lastName = res.data.lastName;
+      //     this.emailId = res.data.emailId;
+      //   });
+      const userData  = this.tableData.find(user => user.id == this.id); 
+      if(userData){
+        this.firstName = userData.사용자id;
+        this.lastName = userData.사용자명;
+        this.emailId = userData.id;
+      }else{
+        console.log(this.id + "not found");
+      }
+
+    },
     validateAndSubmit(e) {
       e.preventDefault();
       this.errors = [];
@@ -91,7 +107,7 @@ export default {
           //   lastName: this.lastName,
           //   emailId: this.emailId,
           // }).then(() => {
-            this.$router.push("/");
+            this.$router.push("/admin/userlist");
           // });
         }
       }

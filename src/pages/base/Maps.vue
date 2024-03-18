@@ -11,7 +11,7 @@
   </gmap-map>
 </template>
 <script>
-  import {API_KEY} from './Maps/API_KEY'
+  import {API_KEY} from '../Maps/API_KEY'
   import Vue from 'vue'
   import * as VueGoogleMaps from 'vue2-google-maps'
   Vue.use(VueGoogleMaps, {
@@ -74,4 +74,4 @@
   #map {
     min-height: calc(100vh - 123px);
   }
-</style>
+</style>../Maps/API_KEY

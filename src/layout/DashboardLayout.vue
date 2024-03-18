@@ -10,17 +10,17 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>User list</p>
       </sidebar-link>
-      <sidebar-link to="/admin/table-list">
+      <sidebar-link to="/admin/customerlist">
         <i class="nc-icon nc-notes"></i>
-        <p>Table list</p>
+        <p>Customer list</p>
       </sidebar-link>
-      <sidebar-link to="/admin/typography">
+      <sidebar-link to="/admin/grouplist">
         <i class="nc-icon nc-paper-2"></i>
-        <p>Typography</p>
+        <p>GroupList</p>
       </sidebar-link>
-      <sidebar-link to="/admin/icons">
+      <sidebar-link to="/admin/holidayshedulelist">
         <i class="nc-icon nc-atom"></i>
-        <p>Icons</p>
+        <p>HolidaySheduleList</p>
       </sidebar-link>
       <sidebar-link to="/admin/maps">
         <i class="nc-icon nc-pin-3"></i>

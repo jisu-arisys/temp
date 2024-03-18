@@ -24,9 +24,17 @@ import LightBootstrap from "./light-bootstrap-main";
 import routes from "./routes/routes";
 
 import "./registerServiceWorker";
+
+//library
+import dayjs from "dayjs"
+
+
 // plugin setup
 Vue.use(VueRouter);
 Vue.use(LightBootstrap);
+
+//configure library
+Vue.prototype.$dayjs = dayjs;
 
 // configure router
 const router = new VueRouter({
@@ -47,3 +55,4 @@ new Vue({
   render: (h) => h(App),
   router,
 });
+

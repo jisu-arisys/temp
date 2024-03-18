@@ -54,8 +54,6 @@
   </div>
 </template>
 <script>
-  import LTable from 'src/components/Table.vue'
-  import Card from 'src/components/Cards/Card.vue'
   const tableColumns = ['Id', 'Name', 'Salary', 'Country', 'City']
   const tableData = [{
     id: 1,
@@ -93,10 +91,6 @@
     city: 'Feldkirchen in Kärnten'
   }]
   export default {
-    components: {
-      LTable,
-      Card
-    },
     data () {
       return {
         table1: {

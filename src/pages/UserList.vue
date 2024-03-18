@@ -9,14 +9,18 @@
             <template slot="header">
               <h4 class="card-title">사용자 관리</h4>
               <p class="card-category">수정된 사용자 목록을 표시하고 관리할 수 있는 페이지.12명 이상이면 스크롤 발생</p>
-              <div class="col-12">
-                <router-link :to="{path:'/admin/userupdate'}" class="btn float-right btn-success btn-sm" >Add</router-link>
+              <div class="ms-auto p-2">
+                <button class="btn float-right btn-success btn-sm" @click="addUser()">
+                  Add
+                </button>
               </div>
             </template>
-            <ud-table class="table-hover table-striped"
+            <u-table class="table-hover table-striped"
                      :columns="table1.columns"
-                     :data="table1.data">
-            </ud-table>
+                     :data="table1.data"
+                     @edit="updateUser"
+                     @del="deleteUser">
+            </u-table>
           </card>
         </div>
       </div>
@@ -24,8 +28,6 @@
   </div>
 </template>
 <script>
-  import UdTable from 'src/components/TableUpdateDelete.vue'
-  import Card from 'src/components/Cards/Card.vue'
   const tableColumns = ['Id', '사용자ID', '사용자명']
   const tableData = [{
     id: 1,
@@ -53,10 +55,6 @@
     사용자명: '사용자',
   }]
   export default {
-    components: {
-      UdTable,
-      Card
-    },
     data () {
       return {
         table1: {
@@ -70,7 +68,17 @@
       }
     },
     methods : {
-     
+      addUser(){
+        this.$router.push("/admin/userupdate/-1");
+      },
+      updateUser(row){
+        this.$router.push("/admin/userupdate/"+row.id);
+      },
+      deleteUser(row){
+        if(confirm(row.사용자id +" " + row.사용자명 + "를 삭제하시겠습니까?")){
+          console.log("deleteGruop :" + row.id);
+        }
+      }
     }
   }
 </script>

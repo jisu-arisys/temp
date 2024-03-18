@@ -1,18 +1,27 @@
 import DashboardLayout from '../layout/DashboardLayout.vue'
 // GeneralViews
-import NotFound from '../pages/NotFoundPage.vue'
+import NotFound from '../pages/base/NotFoundPage.vue'
 
 // Admin pages
-import Overview from 'src/pages/Overview.vue'
-import UserProfile from 'src/pages/UserProfile.vue'
-import TableList from 'src/pages/TableList.vue'
-import Typography from 'src/pages/Typography.vue'
-import Icons from 'src/pages/Icons.vue'
-import Maps from 'src/pages/Maps.vue'
-import Notifications from 'src/pages/Notifications.vue'
-import Upgrade from 'src/pages/Upgrade.vue'
+import Overview from 'src/pages/base/Overview.vue'
+import UserProfile from 'src/pages/base/UserProfile.vue'
+import TableList from 'src/pages/base/TableList.vue'
+import Typography from 'src/pages/base/Typography.vue'
+import Icons from 'src/pages/base/Icons.vue'
+import Maps from 'src/pages/base/Maps.vue'
+import Notifications from 'src/pages/base/Notifications.vue'
+import Upgrade from 'src/pages/base/Upgrade.vue'
+
+//new pages
 import UserList from 'src/pages/UserList.vue'
 import UserUpdate from 'src/pages/UserUpdate.vue'
+import CustomerList from 'src/pages/CustomerList.vue'
+import CustomerUpdate from 'src/pages/CustomerUpdate.vue'
+import GroupUpdate from 'src/pages/GroupUpdate.vue'
+import GroupList from 'src/pages/GroupList.vue'
+import TimeEditForm from 'src/pages/TimeEditForm.vue'
+import HolidaySheduleList from 'src/pages/HolidaySheduleList.vue'
+import ToggleGroup from 'src/pages/test.vue'
 
 const routes = [
   {
@@ -26,9 +35,44 @@ const routes = [
     redirect: '/admin/overview',
     children: [
       {
-        path: 'userupdate',
+        path: 'togglegroup',
+        name: 'ToggleGroup',
+        component: ToggleGroup
+      },
+      {
+        path: 'timetditform/:id',
+        name: 'TimeEditForm',
+        component: TimeEditForm
+      },
+      {
+        path: 'groupupdate/:id',
+        name: 'GroupUpdate',
+        component: GroupUpdate
+      },
+      {
+        path: 'customerupdate/:id',
+        name: 'CustomerUpdate',
+        component: CustomerUpdate
+      },
+      {
+        path: 'userupdate/:id',
         name: 'UserUpdate',
         component: UserUpdate
+      },
+      {
+        path: 'grouplist',
+        name: 'GroupList',
+        component: GroupList
+      },
+      {
+        path: 'holidayshedulelist',
+        name: 'HolidaySheduleList',
+        component: HolidaySheduleList
+      },
+      {
+        path: 'customerlist',
+        name: 'Customerlist',
+        component: CustomerList
       },
       {
         path: 'userlist',

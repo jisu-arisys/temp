@@ -84,13 +84,13 @@
   </div>
 </template>
 <script>
-  import Card from 'src/components/Cards/Card.vue'
+  // import Card from 'src/components/Cards/Card.vue'
 
-  export default {
-    components: {
-      Card
-    }
-  }
+  // export default {
+  //   components: {
+  //     Card
+  //   }
+  // }
 
 </script>
 <style>
