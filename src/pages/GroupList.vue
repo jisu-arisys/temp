@@ -141,24 +141,17 @@
         });
         this.options = Array.from(customersSet);
         this.options.push('전체');
-        
-        // console.log(this.options);
       },
       extractGroups(newCustomer) {
         if(newCustomer){
-
           const groupsSet = new Set();
           tableData.forEach(item => {
-            // 선택된 고객사만을 대상으로 group을 추출합니다.
-            // if (!newCustomer || newCustomer =='전체'||newCustomer === item.customer) {
               if (newCustomer === item.customer) {
                 groupsSet.add(item.group);}
               });
-        this.optGroups = Array.from(groupsSet);
-        this.optGroups.push('전체');
-        
-        // console.log(this.optGroups);
-      }
+          this.optGroups = Array.from(groupsSet);
+          this.optGroups.push('전체');
+        }
       },
       filterData(filterOrder) {
         if (filterOrder.customer === '전체') {
