@@ -13,19 +13,19 @@
       </slot>
     </thead>
     <tbody>
-    <tr v-for="(item, index) in data" :key="index" @click="handleColumnClick(index)" >
+    <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
-        <td v-for="column in columns" :key="column" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+        <td v-for="column in columns" :key="column" @click="handleColumnClick(index)" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
         <td>
-            <button class="btn btn-warning btn-sm" @click="editItem(item)">
-              Update
-            </button>
-            &nbsp;&nbsp;
-            <button class="btn btn-danger btn-sm" v-on:click="deleteItem(item)">
-              Delete
-            </button>
-          </td>
-        </slot>
+          <button class="btn btn-warning btn-sm" @click="editItem(item)">
+            Update
+          </button>
+          &nbsp;&nbsp;
+          <button class="btn btn-danger btn-sm" v-on:click="deleteItem(item)">
+            Delete
+          </button>
+        </td>
+      </slot>
     </tr>
     </tbody>
   </table>
@@ -53,8 +53,6 @@
           this.$emit('edit', row);
       },
       handleColumnClick(index) {
-      // row 클릭 이벤트 핸들러
-      console.log(index);
       this.$emit('handle', index);
       }
       

@@ -37,9 +37,21 @@
                      :data="table1.data"
                      @edit="updateGroup"
                      @del="deleteGroup"
-                     @handle="togle">
+                     @handle="togleGroup">
 
             </u-table>
+            <br>
+          </card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">          
+          <card>
+            <label>Details</label>
+                  <textarea rows="5" class="form-control border-input"
+                    placeholder="Description about business hours"
+                    v-model="expandedDetail"
+                    ></textarea>
           </card>
         </div>
       </div>
@@ -121,6 +133,9 @@
         },
         options:[],
         optGroups:[],
+        expandedRow: null,
+        expandedDetail: null
+        
       }
     },
     watch: {
@@ -134,6 +149,15 @@
       },
     },
     methods : {
+      togleGroup(index){
+        // 클릭한 행의 인덱스를 저장하여 토글 기능 구현
+        if (index >= 0 && index < tableData.length) { 
+          // this.expandedRow = index;
+          this.expandedRow = this.expandedRow === index ? null : index;
+          this.expandedDetail = JSON.stringify(tableData[this.expandedRow]);
+          console.log(this.expandedRow);
+        }
+      },
       extractCustomers() {
         const customersSet = new Set();
         tableData.forEach(item => {
@@ -188,7 +212,6 @@
     },
     created() {
     this.extractCustomers();
-    // this.extractGroups();
   },
 }
 </script>
