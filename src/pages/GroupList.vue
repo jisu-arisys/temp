@@ -35,8 +35,9 @@
             <u-table class="table-hover table-striped"
                      :columns="table1.columns"
                      :data="table1.data"
-                     @edit = "updateGroup"
-                     @del = "deleteGroup">
+                     @edit="updateGroup"
+                     @del="deleteGroup"
+                     @handle="togle">
 
             </u-table>
           </card>
@@ -48,7 +49,8 @@
 <script>
   const headerColumns = ['','', '', '' ,'┌  fulltime',' -----------------┐','┌  shorttime','------------------┐','','']
   const tableColumns = ['Id','customer', 'group', 'Vdn' ,'updateat']
-  const tableData = [{
+  const tableData = [
+    {
     id: 1,
     customer: '현대카드',
     group: 'H1',
