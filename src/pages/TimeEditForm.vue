@@ -21,10 +21,10 @@
       <div class="row">
         <div class="col-md-6">
           <base-input type="text"
-                    label="Company"
+                    label="Customer"
                     :disabled="true"
                     placeholder="Light dashboard"
-                    v-model="businessHours.company">
+                    v-model="businessHours.customer">
           </base-input>
         </div>
       </div>
@@ -139,7 +139,7 @@
       return {
         errors: [],
         businessHours: {
-          company: '현대카드',
+          customer: '현대카드',
           group: 'H1',
           description: '',
           monday: {

@@ -48,10 +48,61 @@
         <div class="col-12">          
           <card>
             <label>Details</label>
-                  <textarea rows="5" class="form-control border-input"
-                    placeholder="Description about business hours"
-                    v-model="expandedDetail"
-                    ></textarea>
+              <div v-if=expandedbusinessHours>
+                <table>
+                  <tr >
+                    <td class="col-1"><label>Customer</label></td>
+                    <td class="col-4">{{ expandedbusinessHours.customer }}</td>
+                  </tr>
+                  <tr >
+                    <td class="col-1"><label>Group</label></td>
+                    <td class="col-4">{{ expandedbusinessHours.group }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" rowspan="4">
+                      <table>
+                        <tr>
+                          <td><label>영업시간</label></td>
+                        </tr>
+                        <tr>
+                          <td class="col-2 "><label>월요일 ~ 금요일</label></td>
+                          <td class="col-4">
+                            <span v-if="expandedbusinessHours.monday.isHoly">휴일</span>
+                            <span v-else-if="expandedbusinessHours.monday.is24">24시간</span>
+                            <span v-else>{{ expandedbusinessHours.monday.openingTime +' ~ '+expandedbusinessHours.monday.closingTime }}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="col-2 "><label>토요일</label></td>
+                          <td class="col-4">
+                            <span v-if="expandedbusinessHours.saturday.isHoly">휴일</span>
+                            <span v-else-if="expandedbusinessHours.saturday.is24">24시간</span>
+                            <span v-else>{{ expandedbusinessHours.saturday.openingTime +' ~ '+expandedbusinessHours.saturday.closingTime }}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="col-2 "><label>일요일</label></td>
+                          <td class="col-4">
+                            <span v-if="expandedbusinessHours.sunday.isHoly">휴일</span>
+                            <span v-else-if="expandedbusinessHours.sunday.is24">24시간</span>
+                            <span v-else>{{ expandedbusinessHours.sunday.openingTime +' ~ '+expandedbusinessHours.sunday.closingTime }}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td colspan="2" rowspan="4">
+                      <table>
+                        <tr>
+                          <td><label>휴무일</label></td>
+                        </tr>
+                        <tr v-for="(holiday, index) in 3" :key="index">
+                          <td class="col-4">{{ expandedHolidays[index] }}&nbsp;</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
           </card>
         </div>
       </div>
@@ -67,10 +118,30 @@
     customer: '현대카드',
     group: 'H1',
     vdn: '36',
-    opentime: '09:00',
-    closetime: '17:00',
-    work: '월,화,수,목,금',
-    weekend: '토,일',
+    holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
+    businessHours: {
+      customer: '현대카드',
+      group: 'H1',
+      description: '',
+      monday: {
+        isHoly: false,
+        is24: true,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      saturday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      sunday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+    },
     updateat: '2024-02-11 13:07:03',
   },
   {
@@ -78,8 +149,30 @@
     customer: 'KB국민카드',
     group: 'K1',
     vdn: '45',
-    opentime: '09:00',
-    closetime: '18:00',
+    holidays : ['매주 마지막주 금요일','',''],
+    businessHours: {
+      customer: 'KB국민카드',
+      group: 'K1',
+      description: '',
+      monday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      saturday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '12:00',
+      },
+      sunday: {
+        isHoly: true,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+    },
     updateat: '2024-02-11 13:07:03',
   },
   { id: 3,
@@ -134,8 +227,8 @@
         options:[],
         optGroups:[],
         expandedRow: null,
-        expandedDetail: null
-        
+        expandedbusinessHours: null,
+        expandedHolidays: null,
       }
     },
     watch: {
@@ -154,7 +247,9 @@
         if (index >= 0 && index < tableData.length) { 
           // this.expandedRow = index;
           this.expandedRow = this.expandedRow === index ? null : index;
-          this.expandedDetail = JSON.stringify(tableData[this.expandedRow]);
+          this.expandedbusinessHours = tableData[this.expandedRow].businessHours;
+          this.expandedHolidays = tableData[this.expandedRow].holidays;
+          // this.expandedDetail = JSON.stringify(tableData[this.expandedRow],null,2);
           console.log(this.expandedRow);
         }
       },
