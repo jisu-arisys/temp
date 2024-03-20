@@ -37,34 +37,6 @@
           </base-input>
         </div>
       </div>
-
-      <!-- <div class="row">
-        <div class="col-md-3">
-          <label>
-            월요일 ~ 금요일
-          </label>
-          <input type="time" class="form-control" v-model="businessHours.monday.openingTime" :readonly="businessHours.monday.isHoly">
-        </div>
-        <div class="col-md-3">
-          <label> &nbsp;</label>
-          <input type="time" class="form-control" v-model="businessHours.monday.closingTime" :readonly="businessHours.monday.isHoly">
-        </div>
-        &nbsp;
-        <div class="col-md-5">
-          <label> &nbsp;{{ businessHours.monday.openingTime +' ~ '+ businessHours.monday.closingTime }}</label>
-          <div class="p-2">
-            <input type="radio" id="one" value="18:00" v-model="businessHours.monday.closingTime" @change="setBusinessHours" />
-            <label class="px-2" for="one">영업</label>
-  
-            <input type="radio" id="two" value="00:00" v-model="businessHours.monday.closingTime" @change="setHolyHours" />
-            <label class="px-2" for="two">휴일</label>
-  
-            <input type="radio" id="three" value="24:00" v-model="businessHours.monday.closingTime" @change="setHolyHours" />
-            <label class="px-2" for="three">24시간</label>
-          </div>
-        </div>
-      </div> -->
-
       <div class="row">
         <div class="col-md-3">
           <label>월요일 ~ 금요일</label>
@@ -109,8 +81,8 @@
         :openingTime="businessHours.sunday.openingTime" :closingTime="businessHours.sunday.closingTime"
         ></time-radio>
       </div>
-
-      <div class="row">
+<!-- 미사용 생략 -->
+      <!-- <div class="row">
         <div class="col-md-10">
           <div class="form-group">
             <label>Description</label>
@@ -120,7 +92,7 @@
               </textarea>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="text-center">
         <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="validateAndSubmit">
           Update

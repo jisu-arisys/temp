@@ -20,6 +20,7 @@ import CustomerUpdate from 'src/pages/CustomerUpdate.vue'
 import GroupUpdate from 'src/pages/GroupUpdate.vue'
 import GroupList from 'src/pages/GroupList.vue'
 import TimeEditForm from 'src/pages/TimeEditForm.vue'
+import HolyEditForm from 'src/pages/HolyEditForm.vue'
 import HolidaySheduleList from 'src/pages/HolidaySheduleList.vue'
 import ToggleGroup from 'src/pages/test.vue'
 
@@ -38,6 +39,11 @@ const routes = [
         path: 'togglegroup',
         name: 'ToggleGroup',
         component: ToggleGroup
+      },
+      {
+        path: 'holytditform/:id',
+        name: 'HolyEditForm',
+        component: HolyEditForm
       },
       {
         path: 'timetditform/:id',

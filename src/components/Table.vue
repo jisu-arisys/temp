@@ -10,7 +10,7 @@
     <tbody>
     <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
-        <td v-for="column in columns" :key="column" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+        <td v-for="column in columns" :key="column" @click="handleColumnClick(item)" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
       </slot>
     </tr>
     </tbody>
@@ -29,6 +29,9 @@
       },
       itemValue (item, column) {
         return item[column.toLowerCase()]
+      },
+      handleColumnClick(item) {
+      this.$emit('handle', item);
       }
     }
   }

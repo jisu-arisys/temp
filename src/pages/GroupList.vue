@@ -2,7 +2,7 @@
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-12">
+        <div class="col-md-8">
           <card class="strpied-tabled-with-hover"
                 body-classes="table-full-width table-responsive"
           >
@@ -32,77 +32,93 @@
                   </button>
               </div>
             </div>
-            <u-table class="table-hover table-striped"
+            <l-table class="table-hover table-striped"
                      :columns="table1.columns"
                      :data="table1.data"
                      @edit="updateGroup"
                      @del="deleteGroup"
                      @handle="togleGroup">
 
-            </u-table>
+            </l-table>
             <br>
           </card>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-12">          
+        <div class="col-md-4">          
           <card>
             <label>Details</label>
-              <div v-if=expandedbusinessHours>
-                <table>
-                  <tr >
-                    <td class="col-1"><label>Customer</label></td>
-                    <td class="col-4">{{ expandedbusinessHours.customer }}</td>
-                  </tr>
-                  <tr >
-                    <td class="col-1"><label>Group</label></td>
-                    <td class="col-4">{{ expandedbusinessHours.group }}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" rowspan="4">
-                      <table>
-                        <tr>
-                          <td><label>영업시간</label></td>
-                        </tr>
-                        <tr>
-                          <td class="col-2 "><label>월요일 ~ 금요일</label></td>
-                          <td class="col-4">
-                            <span v-if="expandedbusinessHours.monday.isHoly">휴일</span>
-                            <span v-else-if="expandedbusinessHours.monday.is24">24시간</span>
-                            <span v-else>{{ expandedbusinessHours.monday.openingTime +' ~ '+expandedbusinessHours.monday.closingTime }}</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="col-2 "><label>토요일</label></td>
-                          <td class="col-4">
-                            <span v-if="expandedbusinessHours.saturday.isHoly">휴일</span>
-                            <span v-else-if="expandedbusinessHours.saturday.is24">24시간</span>
-                            <span v-else>{{ expandedbusinessHours.saturday.openingTime +' ~ '+expandedbusinessHours.saturday.closingTime }}</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="col-2 "><label>일요일</label></td>
-                          <td class="col-4">
-                            <span v-if="expandedbusinessHours.sunday.isHoly">휴일</span>
-                            <span v-else-if="expandedbusinessHours.sunday.is24">24시간</span>
-                            <span v-else>{{ expandedbusinessHours.sunday.openingTime +' ~ '+expandedbusinessHours.sunday.closingTime }}</span>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td colspan="2" rowspan="4">
-                      <table>
-                        <tr>
-                          <td><label>휴무일</label></td>
-                        </tr>
-                        <tr v-for="(holiday, index) in 3" :key="index">
-                          <td class="col-4">{{ expandedHolidays[index] }}&nbsp;</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </div>
+            <br>
+            <div v-if=expandedData>
+              <table>
+                <tr >
+                  <td><label>Customer</label></td>
+                  <td>{{ expandedData.customer }}</td>
+                </tr>
+                <tr >
+                  <td class="col-1"><label>Group</label></td>
+                  <td class="col-3">{{ expandedData.group }}</td>
+                </tr>
+                <tr>
+                  <td colspan="4"><hr></td>
+                </tr>
+                <tr>
+                  <td><label>영업시간</label></td>
+                  <td><button class="btn float-right btn-warning btn-sm" @click="updateTime()">
+                      Update
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-1 "><label>월요일 ~ 금요일</label></td>
+                  <td class="col-2">
+                    <span v-if="expandedData.businessHours.monday.isHoly">휴일</span>
+                    <span v-else-if="expandedData.businessHours.monday.is24">24시간</span>
+                    <span v-else>{{ expandedData.businessHours.monday.openingTime +' ~ '+expandedData.businessHours.monday.closingTime }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-1 "><label>토요일</label></td>
+                  <td class="col-3">
+                    <span v-if="expandedData.businessHours.saturday.isHoly">휴일</span>
+                    <span v-else-if="expandedData.businessHours.saturday.is24">24시간</span>
+                    <span v-else>{{ expandedData.businessHours.saturday.openingTime +' ~ '+expandedData.businessHours.saturday.closingTime }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-1 "><label>일요일</label></td>
+                  <td class="col-3">
+                    <span v-if="expandedData.businessHours.sunday.isHoly">휴일</span>
+                    <span v-else-if="expandedData.businessHours.sunday.is24">24시간</span>
+                    <span v-else>{{ expandedData.businessHours.sunday.openingTime +' ~ '+expandedData.businessHours.sunday.closingTime }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4"><hr></td>
+                </tr>
+                <tr>
+                  <td><label>휴무일</label></td>
+                  <td><button class="btn float-right btn-warning btn-sm" @click="updateHoly()">
+                    Update
+                  </button>
+                </td>
+              </tr>
+              <tr v-for="index in 3" :key="index">
+                <td class="col-4">{{ expandedData.holidays[index] }}&nbsp;</td>
+              </tr>
+              <tr>
+                <!-- <td colspan="4"><hr></td> -->
+              </tr>
+              <tr>
+                <td><label>임시휴일</label></td>
+                <!-- <td><button class="btn float-right btn-warning btn-sm" @click="updateTemp()">
+                  Update
+                </button>
+                </td> -->
+              </tr>
+              <tr v-for="index in 3" :key="index">
+                <td class="col-4">{{ expandedData.Tempholidays[index] }}&nbsp;</td>
+              </tr>
+              </table>
+            </div>
           </card>
         </div>
       </div>
@@ -110,6 +126,8 @@
   </div>
 </template>
 <script>
+import BHhours from "/src/components/BusinessHours.vue"
+
   const headerColumns = ['','', '', '' ,'┌  fulltime',' -----------------┐','┌  shorttime','------------------┐','','']
   const tableColumns = ['Id','customer', 'group', 'Vdn' ,'updateat']
   const tableData = [
@@ -119,6 +137,7 @@
     group: 'H1',
     vdn: '36',
     holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
+    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: '현대카드',
       group: 'H1',
@@ -179,8 +198,30 @@
     customer: '롯데카드',
     group: 'L1',
     vdn: '26',
-    opentime: '09:00',
-    closetime: '18:00',
+    holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
+    businessHours: {
+      customer: 'KB국민카드',
+      group: 'K1',
+      description: '',
+      monday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      saturday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '12:00',
+      },
+      sunday: {
+        isHoly: true,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+    },
     updateat: '2024-02-11 13:07:03',
   },
   {
@@ -188,8 +229,30 @@
     customer: '벤츠 파이낸셜',
     group: 'B1',
     vdn: '56',
-    opentime: '09:00',
-    closetime: '18:00',
+    holidays : ['매주 마지막주 금요일','',''],
+    businessHours: {
+      customer: 'KB국민카드',
+      group: 'K1',
+      description: '',
+      monday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      saturday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '12:00',
+      },
+      sunday: {
+        isHoly: true,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+    },
     updateat: '2024-02-11 13:07:03',
   },
   {
@@ -197,17 +260,62 @@
     customer: 'A사',
     group: 'A5',
     vdn: '67',
-    opentime: '09:00',
-    closetime: '18:00',
+    holidays : ['매주 마지막주 금요일','',''],
+    businessHours: {
+      customer: 'KB국민카드',
+      group: 'K1',
+      description: '',
+      monday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      saturday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '12:00',
+      },
+      sunday: {
+        isHoly: true,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+    },
     updateat: '2024-02-11 13:07:03',
   },
   {
-    id: 6,
+    id: 7,
     customer: 'B사',
     group: 'B5',
     vdn: '55',
-    opentime: '09:00',
-    closetime: '18:00',
+    holidays : ['','',' '],
+    Tempholidays : ['','',' '],
+    businessHours: {
+      customer: 'B사',
+      group: 'B5',
+      description: '',
+      monday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      saturday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+      sunday: {
+        isHoly: false,
+        is24: false,
+        openingTime: '09:00',
+        closingTime: '18:00',
+      },
+    },
     updateat: '2024-02-11 13:07:03',
   }
 
@@ -227,8 +335,7 @@
         options:[],
         optGroups:[],
         expandedRow: null,
-        expandedbusinessHours: null,
-        expandedHolidays: null,
+        expandedData: null,
       }
     },
     watch: {
@@ -242,15 +349,11 @@
       },
     },
     methods : {
-      togleGroup(index){
-        // 클릭한 행의 인덱스를 저장하여 토글 기능 구현
-        if (index >= 0 && index < tableData.length) { 
-          // this.expandedRow = index;
-          this.expandedRow = this.expandedRow === index ? null : index;
-          this.expandedbusinessHours = tableData[this.expandedRow].businessHours;
-          this.expandedHolidays = tableData[this.expandedRow].holidays;
-          // this.expandedDetail = JSON.stringify(tableData[this.expandedRow],null,2);
-          console.log(this.expandedRow);
+      togleGroup(item){
+        // 클릭한 행의 데이터를 저장하여 토글 기능 구현
+        if (item) { 
+          this.expandedData = this.expandedData === item ? null : item;
+          console.log(this.expandedData.id);
         }
       },
       extractCustomers() {
@@ -290,9 +393,17 @@
           });
         }
       },
-      updateGroup(row){
-          console.log("updateGroup :" + row.id);
-          this.$router.push("/admin/timetditform/"+row.id);
+      // updateTemp(){
+      //     console.log("updateTemp :" + this.expandedData.id);
+      //     this.$router.push("/admin/timetditform/"+this.expandedData.id);
+      // },
+      updateHoly(){
+          console.log("updateHoly :" + this.expandedData.id);
+          this.$router.push("/admin/holytditform/"+this.expandedData.id);
+      },
+      updateTime(){
+          console.log("updateGroup :" + this.expandedData.id);
+          this.$router.push("/admin/timetditform/"+this.expandedData.id);
       },
       deleteGroup(row){
         if(confirm(row.id +" " + row.vdn + "를 삭제하시겠습니까?")){
