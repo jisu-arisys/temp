@@ -13,7 +13,10 @@
         <!-- 데이터 배열을 두 번 반복 -->
         <tr v-for="(item, index) in data" :key="index">
           <slot :row="item">
-            <td v-for="column in columns" :key="column" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
+            <!-- vue3 수정사항 -->
+            <template v-if="hasValue(item, column)">
+              <td v-for="column in columns" :key="column" >{{ itemValue(item, column) }}</td>
+            </template>
             <td>
               <button class="btn btn-warning btn-sm" @click="editItem(item)">Update</button>
               <button class="btn btn-danger btn-sm" v-on:click="deleteItem(item)">Delete</button>

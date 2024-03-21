@@ -1,5 +1,4 @@
 import Card from './Cards/Card.vue'
-import ChartCard from './Cards/ChartCard.vue'
 import StatsCard from './Cards/StatsCard.vue'
 
 import BaseCheckbox from './Inputs/BaseCheckbox.vue'
@@ -21,7 +20,7 @@ let components = {
   BaseInput,
   TimeRadio,
   Card,
-  ChartCard,
+  // ChartCard,
   StatsCard,
   LTable,
   UTable,

@@ -15,7 +15,10 @@
     <tbody>
     <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
-        <td v-for="column in columns" :key="column" @click="handleColumnClick(index)" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+        <!-- vue3 변경사항 -->
+        <template v-if="hasValue(item, column)">
+          <td v-for="column in columns" :key="column" @click="handleColumnClick(index)">{{itemValue(item, column)}}</td>
+        </template>
         <td>
           <button class="btn btn-warning btn-sm" @click="editItem(item)">
             Update

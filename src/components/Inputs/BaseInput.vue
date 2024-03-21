@@ -18,8 +18,8 @@
     </slot>
     <slot>
       <input
-        :value="value"
         v-bind="$attrs"
+        :value="value"
         v-on="listeners"
         class="form-control"
         aria-describedby="addon-right addon-left"

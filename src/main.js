@@ -13,46 +13,35 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-import Vue from "vue";
-import VueRouter from "vue-router";
+
+import { createApp } from 'vue'; //vue3
+// import { createRouter, createWebHistory } from 'vue-router'; // Vue Router 4
 import App from "./App.vue";
 
-// LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
-
-// router setup
-import routes from "./routes/routes";
-
 import "./registerServiceWorker";
-
-//library
 import dayjs from "dayjs"
+import axios from 'axios';
+import router from './routes/routes';
 
 
-// plugin setup
-Vue.use(VueRouter);
-Vue.use(LightBootstrap);
+  // vue 앱 생성
+  const app = createApp(App);
 
-//configure library
-Vue.prototype.$dayjs = dayjs;
+  // Vue Router 설정
+  // const router = createRouter({
+  //   history: createWebHistory(),
+  //   routes: [],
+  // });
 
-// configure router
-const router = new VueRouter({
-  routes, // short for routes: routes
-  linkActiveClass: "nav-item active",
-  scrollBehavior: (to) => {
-    if (to.hash) {
-      return { selector: to.hash };
-    } else {
-      return { x: 0, y: 0 };
-    }
-  },
-});
+//플러그인, 라이브러리, 전역변수 설정
+app.use(router);
+app.use(LightBootstrap);
+app.use(dayjs);
+app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$serverUrl = '//localhost:8080';
 
-/* eslint-disable no-new */
-new Vue({
-  el: "#app",
-  render: (h) => h(App),
-  router,
-});
+// Vue 인스턴스 마운트
+app.mount('#app');
+
 

@@ -43,20 +43,31 @@ const NotificationStore = {
 };
 
 const NotificationsPlugin = {
-  install(Vue, options) {
-    let app = new Vue({
-      data: {
-        notificationStore: NotificationStore
-      },
-      methods: {
-        notify(notification) {
-          this.notificationStore.notify(notification);
-        }
-      }
-    });
-    Vue.prototype.$notify = app.notify;
-    Vue.prototype.$notifications = app.notificationStore;
-    Vue.component('Notifications', Notifications);
+  //Vue3에서 new Vue 사용불가 코드수정
+
+  // install(Vue, options) {
+    // let app = new Vue({
+    //   data: {
+    //     notificationStore: NotificationStore
+    //   },
+    //   methods: {
+    //     notify(notification) {
+    //       this.notificationStore.notify(notification);
+    //     }
+    //   }
+    // });
+    // Vue.prototype.$notify = app.notify;
+    // Vue.prototype.$notifications = app.notificationStore;
+    // Vue.component('Notifications', Notifications);
+    // if (options) {
+    //   NotificationStore.setOptions(options);
+    // }
+  // }
+  
+  install(app, options) {
+    app.config.globalProperties.$notifications = NotificationStore;
+    app.config.globalProperties.$notify = NotificationStore.notify;
+    app.component('Notifications', Notifications);
     if (options) {
       NotificationStore.setOptions(options);
     }

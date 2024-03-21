@@ -1,9 +1,7 @@
 {
-  "name": "vue-light-bootstrap-dashboard",
-  "version": "2.1.0",
   "private": true,
+  "name": "migration_vue3",
   "description": "Vue light bootstrap dashboard",
-  "author": "cristijora <joracristi@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
@@ -13,25 +11,29 @@
     "lint-fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "bootstrap": "4.6.0",
-    "cache-loader": "^4.1.0",
-    "chartist": "0.11.0",
+    "core-js": "^3.36.1",
     "dayjs": "^1.11.10",
-    "google-maps": "3.2.1",
     "register-service-worker": "1.7.2",
-    "v-tooltip": "2.0.0-rc.33",
-    "vue": "2.7.14",
-    "vue-router": "3.0.2",
-    "vue2-google-maps": "0.10.7"
+    "vue": "^3.1.0",
+    "vue-router": "^4.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "3.12.1",
-    "@vue/cli-plugin-eslint": "3.12.1",
-    "@vue/cli-plugin-pwa": "3.12.1",
-    "@vue/cli-service": "3.12.1",
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@babel/preset-env": "^7.24.3",
+    "@vitejs/plugin-vue": "^1.2.2",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-plugin-pwa": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "@vue/compiler-sfc": "^3.1.0",
+    "cache-loader": "^4.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
     "sass": "1.56.2",
-    "sass-loader": "10.1.1",
-    "vue-template-compiler": "2.7.14"
+    "sass-loader": "10.1.1"
   },
   "browserslist": [
     "> 1%",

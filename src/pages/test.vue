@@ -20,7 +20,10 @@
         <!-- 기존 데이터 출력 -->
         <tr v-for="(item, index) in tableData" :key="index">
           <slot :row="item">
-            <td v-for="column in tableColumns" :key="column" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
+            <!-- vue3 -->
+            <template v-if="hasValue(item, column)">
+              <td v-for="column in tableColumns" :key="column" >{{ itemValue(item, column) }}</td>
+            </template>
             <td>
               <button class="btn btn-warning btn-sm" @click="editItem(item)">Update</button>
               <button class="btn btn-danger btn-sm" @click="deleteItem(item)">Delete</button>

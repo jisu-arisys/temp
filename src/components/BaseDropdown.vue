@@ -1,6 +1,7 @@
 <template>
+  <!-- vue3 변경사항 적용 -->
   <li class="dropdown nav-item"
-      :is="tag"
+      :is="'vue:' +tag"
       :class="{show: isOpen}"
       aria-haspopup="true"
       :aria-expanded="isOpen"

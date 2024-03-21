@@ -1,7 +1,8 @@
 <template>
-  <component :is="tag"
-             @click.native="hideSidebar"
-             v-bind="$attrs"
+  <!-- vue3 변경사항 적용 -->
+  <component v-bind="$attrs"
+            :is="'vue:' +tag"
+             @click="hideSidebar" 
              tag="li">
     <a class="nav-link" v-bind="$attrs">
       <slot>

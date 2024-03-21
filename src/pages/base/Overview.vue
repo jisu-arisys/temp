@@ -147,10 +147,10 @@
                 </td>
                 <td>{{row.title}}</td>
                 <td class="td-actions text-right">
-                  <button type="button" class="btn-simple btn btn-xs btn-info" v-tooltip.top-center="editTooltip">
+                  <button type="button" class="btn-simple btn btn-xs btn-info">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button type="button" class="btn-simple btn btn-xs btn-danger" v-tooltip.top-center="deleteTooltip">
+                  <button type="button" class="btn-simple btn btn-xs btn-danger">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
@@ -170,12 +170,12 @@
   </div>
 </template>
 <script>
-  import ChartCard from 'src/components/Cards/ChartCard.vue'
+  // import ChartCard from 'src/components/Cards/ChartCard.vue'
   import StatsCard from 'src/components/Cards/StatsCard.vue'
 
   export default {
     components: {
-      ChartCard,
+      // ChartCard,
       StatsCard
     },
     data () {
@@ -268,4 +268,4 @@
 </script>
 <style>
 
-</style>
+</style> -->

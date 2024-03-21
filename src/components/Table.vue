@@ -9,9 +9,12 @@
     </thead>
     <tbody>
     <tr v-for="(item, index) in data" :key="index">
-      <slot :row="item">
-        <td v-for="column in columns" :key="column" @click="handleColumnClick(item)" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
-      </slot>
+      <!-- vue3 v-for와 v-if의 동시사용 불가로, 가상 dom에 랜더링되지 않는 template를 추가 -->
+      <template v-if="hasValue(item, column)">
+        <slot :row="item">
+          <td v-for="column in columns" :key="column" @click="handleColumnClick(item)">{{itemValue(item, column)}}</td>
+        </slot>
+      </template>
     </tr>
     </tbody>
   </table>

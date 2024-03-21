@@ -8,7 +8,6 @@ import UserProfile from 'src/pages/base/UserProfile.vue'
 import TableList from 'src/pages/base/TableList.vue'
 import Typography from 'src/pages/base/Typography.vue'
 import Icons from 'src/pages/base/Icons.vue'
-import Maps from 'src/pages/base/Maps.vue'
 import Notifications from 'src/pages/base/Notifications.vue'
 import Upgrade from 'src/pages/base/Upgrade.vue'
 
@@ -109,11 +108,6 @@ const routes = [
         path: 'icons',
         name: 'Icons',
         component: Icons
-      },
-      {
-        path: 'maps',
-        name: 'Maps',
-        component: Maps
       },
       {
         path: 'notifications',
