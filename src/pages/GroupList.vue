@@ -15,32 +15,40 @@
                 <label calss="">
                   고객사
                   <select v-model="filterOrder.customer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
-                    <option v-for="(option, index) in options" :key="index" :value="option">{{ option }}</option>
+                    <option v-for="(option, index) in extractCustomers" :key="index" :value="option">{{ option }}</option>
                   </select>
                 </label>
                 &nbsp;&nbsp;
                 <label>
                   Ivr그룹
                   <select v-model="filterOrder.group" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
-                    <option v-for="(option, index) in optGroups" :key="index" :value="option">{{ option }}</option>
+                    <option v-for="(option, index) in extractGroups" :key="index" :value="option">{{ option }}</option>
                   </select>
                 </label>
               </div>
               <div class="col-3 p-2">
-                  <button class="btn float-right btn-success btn-sm" @click="addGroup()">
+                <button class="btn float-right btn-success btn-sm" @click="addGroup()">
                     Add
                   </button>
+                </div>
               </div>
-            </div>
-            <l-table class="table-hover table-striped"
-                     :columns="table1.columns"
-                     :data="table1.data"
-                     @edit="updateGroup"
-                     @del="deleteGroup"
-                     @handle="togleGroup">
-
+              <l-table class="table-hover table-striped"
+              :columns="table1.columns"
+              :data="table1.data"
+              @handle="togleGroup">
             </l-table>
             <br>
+              <div class="col-12 text-center">
+                  <button class="btn btn-success btn-sm" @click="currentPage--">
+                    &lt;
+                  </button>&nbsp;
+                  <button class="btn btn-success btn-sm" @click.stop>
+                    {{ currentPage }}
+                  </button>&nbsp;
+                  <button class="btn btn-success btn-sm" @click="currentPage++">
+                    &gt;
+                  </button>
+              </div>
           </card>
         </div>
         <div class="col-md-4">          
@@ -105,14 +113,9 @@
                 <td class="col-4">{{ expandedData.holidays[index] }}&nbsp;</td>
               </tr>
               <tr>
-                <!-- <td colspan="4"><hr></td> -->
               </tr>
               <tr>
                 <td><label>임시휴일</label></td>
-                <!-- <td><button class="btn float-right btn-warning btn-sm" @click="updateTemp()">
-                  Update
-                </button>
-                </td> -->
               </tr>
               <tr v-for="index in 3" :key="index">
                 <td class="col-4">{{ expandedData.Tempholidays[index] }}&nbsp;</td>
@@ -126,7 +129,6 @@
   </div>
 </template>
 <script>
-import BHhours from "/src/components/BusinessHours.vue"
 
   const headerColumns = ['','', '', '' ,'┌  fulltime',' -----------------┐','┌  shorttime','------------------┐','','']
   const tableColumns = ['Id','customer', 'group', 'Vdn' ,'updateat']
@@ -169,6 +171,7 @@ import BHhours from "/src/components/BusinessHours.vue"
     group: 'K1',
     vdn: '45',
     holidays : ['매주 마지막주 금요일','',''],
+    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -199,6 +202,7 @@ import BHhours from "/src/components/BusinessHours.vue"
     group: 'L1',
     vdn: '26',
     holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
+    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -230,6 +234,7 @@ import BHhours from "/src/components/BusinessHours.vue"
     group: 'B1',
     vdn: '56',
     holidays : ['매주 마지막주 금요일','',''],
+    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -261,6 +266,7 @@ import BHhours from "/src/components/BusinessHours.vue"
     group: 'A5',
     vdn: '67',
     holidays : ['매주 마지막주 금요일','',''],
+    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -334,69 +340,87 @@ import BHhours from "/src/components/BusinessHours.vue"
         },
         options:[],
         optGroups:[],
+        pageSize:3,
+        currentPage:1,
         expandedRow: null,
         expandedData: null,
       }
     },
-    watch: {
-      filterOrder: {
-        handler(newFilterOrder) {
-          this.filterData(newFilterOrder);
-          this.extractGroups(newFilterOrder.customer);
-          console.log(newFilterOrder.customer, newFilterOrder.group);
+    watch: { //데이터나 속성을 직접 감시하고 특정 동작을 수행하도록 설정
+      currentPage: {
+        handler() {
+          this.updateTableData();
         },
-        deep: true
+        immediate: true
+      },
+      filterOrder: {
+        handler() {
+          this.currentPage=1;
+          this.updateTableData();
+        },
+        deep: true,
+      },
+    },
+    computed:{ //종속성 값이 변하면 자동으로 변경이 있는 부분만 재계산, 변하지 않으면 캐싱값 반환.
+      filteredData() {
+        //종속성 : tableData, filterOrder.customer, filterOrder.group
+        if (this.filterOrder.customer===''|| this.filterOrder.customer === '전체'){
+          return tableData;
+        } else if(this.filterOrder.group ==='전체') {
+          return tableData.filter(row => {
+            const customerMatch = this.filterOrder.customer ? row.customer.toLowerCase().includes(this.filterOrder.customer.toLowerCase()) : true;
+            return customerMatch;
+          });
+        } else {
+          return tableData.filter(row => {
+            const customerMatch = this.filterOrder.customer ? row.customer.toLowerCase().includes(this.filterOrder.customer.toLowerCase()) : true;
+            const groupMatch = this.filterOrder.group ? row.group.toLowerCase().includes(this.filterOrder.group.toLowerCase()) : true;
+            
+              return customerMatch && groupMatch;
+          });
+        }
+      },
+      paginatedData() {
+        // 현재 페이지에 해당하는 데이터만 추출하여 반환합니다.
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        console.log(this.currentPage, this.pageSize);
+        return this.filteredData.slice(startIndex, endIndex);
+      },
+      extractCustomers() {
+        // 옵션 항목을 위해 전체 리스트에서 중복 없는 고객사항목을 추출
+        const customersSet = new Set();
+        tableData.forEach(item => {
+          customersSet.add(item.customer);
+        });
+        const optins =  Array.from(customersSet);
+        optins.push('전체');
+        return optins;
+      },
+      extractGroups() {
+        // 옵션 항목을 위해 전체 리스트에서 중복 없는 그룹항목을 추출
+          const groupsSet = new Set();
+          tableData.forEach(item => {
+              if (this.filterOrder.customer === item.customer) {
+                groupsSet.add(item.group);}
+              });
+          const optinGroups =  Array.from(groupsSet);
+          optinGroups.push('전체');
+          return optinGroups;
       },
     },
     methods : {
+      updateTableData(){
+        this.table1.data = this.paginatedData;
+      },
       togleGroup(item){
-        // 클릭한 행의 데이터를 저장하여 토글 기능 구현
+        // 클릭한 행의 데이터를 저장하여 디테일 화면에 출력
+        // 동일한 행 클릭시 토글 기능 구현
         if (item) { 
           this.expandedData = this.expandedData === item ? null : item;
           console.log(this.expandedData.id);
         }
       },
-      extractCustomers() {
-        const customersSet = new Set();
-        tableData.forEach(item => {
-          customersSet.add(item.customer);
-        });
-        this.options = Array.from(customersSet);
-        this.options.push('전체');
-      },
-      extractGroups(newCustomer) {
-        if(newCustomer){
-          const groupsSet = new Set();
-          tableData.forEach(item => {
-              if (newCustomer === item.customer) {
-                groupsSet.add(item.group);}
-              });
-          this.optGroups = Array.from(groupsSet);
-          this.optGroups.push('전체');
-        }
-      },
-      filterData(filterOrder) {
-        if (filterOrder.customer === '전체') {
-          // '전체' 값을 선택한 경우 필터링을 건너뛰고 원본 데이터를 보여줍니다.
-          this.table1.data = tableData;
-          return;
-        }else if(filterOrder.group === '전체'){
-          this.table1.data = tableData.filter(row => {
-            const customerMatch = filterOrder.customer ? row.customer.toLowerCase().includes(filterOrder.customer.toLowerCase()) : true;
-          return customerMatch;
-          });
-        }else{
-          this.table1.data = tableData.filter(row => {
-          const customerMatch = filterOrder.customer ? row.customer.toLowerCase().includes(filterOrder.customer.toLowerCase()) : true;
-          const groupMatch = filterOrder.group ? row.group.toLowerCase().includes(filterOrder.group.toLowerCase()) : true;
-          return customerMatch && groupMatch;
-          });
-        }
-      },
-      // updateTemp(){
-      //     console.log("updateTemp :" + this.expandedData.id);
-      //     this.$router.push("/admin/timetditform/"+this.expandedData.id);
-      // },
       updateHoly(){
           console.log("updateHoly :" + this.expandedData.id);
           this.$router.push("/admin/holytditform/"+this.expandedData.id);
@@ -416,8 +440,16 @@ import BHhours from "/src/components/BusinessHours.vue"
         }
       },
     },
-    created() {
-    this.extractCustomers();
-  },
+    created: {
+    // Vue 인스턴스가 생성되고 초기화된 후에 호출
+    // 템플릿이 아직 렌더링되지 않았으며, DOM 요소에 접근할 수 없습니다. 
+    // 데이터를 초기화하거나 비동기 작업을 수행하기에 적합합니다.
+    },
+    mounted(){
+      //Vue 인스턴스가 DOM에 마운트된 후에 호출
+      //템플릿이 렌더링되었으며, DOM 요소에 접근할 수 있습니다.
+      //외부 API를 호출하거나 DOM을 조작하는 등의 작업을 수행하기에 적합합니다.
+      this.updateTableData();
+    }
 }
 </script>
