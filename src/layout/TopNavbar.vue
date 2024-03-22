@@ -62,7 +62,7 @@
         return this.capitalizeFirstLetter(name)
       },
       isLoggedIn() {
-        console.log("isLoggedIn"+this.$store.getters.isLoggedIn);
+        // console.log("isLoggedIn"+this.$store.getters.isLoggedIn);
         return this.$store.getters.isLoggedIn;
       },
       userId() {

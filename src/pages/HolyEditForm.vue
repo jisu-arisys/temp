@@ -20,20 +20,16 @@
       
 
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
           <label>CUSTOMER</label>
           <span class="p-4">{{ data.customer }}</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
           <label>GROUP</label>
           <span class="p-4">{{ data.group }}</span>
-          <!-- <base-input type="text"
-                    label="group"
-                    placeholder="group"
-                    v-model="data.group">
-          </base-input> -->
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-2">
           <label for="customSwitch">공휴일 사용여부</label>
@@ -47,29 +43,27 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <hr>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-2">
           <label>정기휴무 </label>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-9">
           <button @click="cycleSize++" class="btn float-right btn-success btn-xs">add</button>
         </div>
       </div>
-
       <div class="row">
-        <div class="col-md-6">
-          <label>* 주기와 요일을 모두 입력해야 등록이 가능합니다.</label>
-          <label>{{ cycleHolidays }}</label>
+        <div class="col-md-12">
+          <label>{{cycleSize + cycleHolidays }}</label>
         </div>
       </div>
-
+      
       <div class="row" v-for="index in cycleSize" :key="index">
-        <div class="col-md-5">
+        <div class="col-md-10">
           <label class="px-4">{{ index }}</label>
           <select v-model="cycleHolidays[index-1].cycle" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
             <option v-for="(option) in options.cycle" :key="option.value" :value="option.value">{{ option.label }}</option>
@@ -78,6 +72,38 @@
           <select v-model="cycleHolidays[index-1].dayOfWeek" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
             <option v-for="(option) in options.dayOfWeek" :key="option.value" :value="option.value">{{ option.label }}</option>
           </select>
+        </div>
+        <div class="col-md-1">
+          <button @click="cycleSizeDecrease(index-1)" class="btn float-right btn-danger btn-xs">remove</button>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <hr>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-2">
+          <label>임시휴무 </label>
+        </div>
+        <div class="col-md-9">
+          <button @click="TempholidaysIncrease" class="btn float-right btn-success btn-xs">add</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <label>{{ data.Tempholidays }}</label>
+        </div>
+      </div>      
+      
+      <div class="row" v-for="(index) in data.Tempholidays.length" :key="'tempHoly'+index">
+        <div class="col-md-10">
+          <label class="px-4">{{ index }}</label>
+          <input type="date" v-model="data.Tempholidays[index-1]" size="7" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
+          &nbsp;
+          <input :value="extractionDayOfWeek(data.Tempholidays[index-1])" size="3" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
         </div>
         <div class="col-md-1">
           <button @click="cycleSizeDecrease(index-1)" class="btn float-right btn-danger btn-xs">remove</button>
@@ -126,7 +152,7 @@
           vdn: '36',
           isPublicHoliday: true,
           holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
-          Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+          Tempholidays : ['2024-02-11','2024-02-13'],
           businessHours: {
             customer: '현대카드',
             group: 'H1',
@@ -153,45 +179,46 @@
         }
       }
     },
+    computed:{
+      duplicatedHolidays(){
+
+        return '';
+      }
+    },
     methods: {
+      extractionDayOfWeek(date){
+        console.log(JSON.stringify(this.$dayjs()));
+        return this.$cal.applyExtractDayOfWeek(date);
+      },
+      TempholidaysIncrease(){
+        this.data.Tempholidays.push(this.$dayjs.today());
+      },
+      cycleSizeIncrease(index){
+        this.cycleSize++
+        this.cycleHolidays.push(null);
+      },
       cycleSizeDecrease(index){
         this.cycleSize--;
         this.cycleHolidays.splice(index, 1);
-        // this.cycleHolidays.dayOfWeek.splice(index, 1);
-      },
-      setHolyHours(id, openingTime, closingTime, isHoly) {
-      this.businessHours[id].openingTime = openingTime;
-      this.businessHours[id].closingTime = closingTime;
-      this.businessHours[id].isHoly = isHoly;
-      },
-      getTimeDiff(time1,time2){
-        const openingTime = this.$dayjs(`2024-03-14T${time1}:00`);
-        const closingTime = this.$dayjs(`2024-03-14T${time2}:00`);
-        const timeDiff = closingTime.diff(openingTime,'minutes');
-        console.log(time1 +'~' +time2 + ':'+ timeDiff);
-        return timeDiff;
       },
       checkDuplication(){
         //정기휴무일의 중복여부를 확인
         const duplicateItems = [];
-        const duplicateIndexes = [];
+        // const duplicateIndexes = [];
 
         this.cycleHolidays.cycle.forEach((item, index) => {
           if (this.cycleHolidays.cycle.indexOf(item) !== index) {
             // 중복된 항목이 있다면 duplicateItems 배열에 추가하고 중복된 인덱스를 duplicateIndexes 배열에 저장합니다.
             duplicateItems.push(item);
-            duplicateIndexes.push(index);
+            // duplicateIndexes.push(index);
           }
         });
-        return duplicateIndexes;
+        return duplicateItems;
       },
       validateAndSubmit(e) {
       this.errors = [];
 
-      if (!this.cycleHolidays) {
-        this.errors.push("Enter valid values");
-      } else if (this.checkDuplication()>0) {
-
+      if (this.checkDuplication()>0) {
         this.errors.push("정기휴무일은 중복되지 않아야 합니다." + this.checkDuplication());
       }
 

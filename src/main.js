@@ -15,21 +15,26 @@
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import App from "./App.vue";
 
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
 import routes from "./routes/routes";
-import store from "./store"
 import "./registerServiceWorker";
+
+// 라이브러리 + 함수
+import store from "./module/store" //Vuex : state,mutations,action 함수가 포함된 .js 호출
+import createCalculator from "./module/dateCalculator" //dayjs : 사용자 정의 계산식 함수가 포함된 .js 호출
+import createfilters from "./module/filters" //사용자정의 테이블 옵션, 필터링, 페이징 함수가 포함된 .js 호출
 
 // plugin setup
 Vue.use(VueRouter);
 Vue.use(LightBootstrap);
 
-//configure library
 Vue.prototype.$dayjs = dayjs;
+Vue.prototype.$cal = createCalculator(dayjs);
+Vue.prototype.$filter = createfilters();
 Vue.prototype.$store = store; // Vuex 스토어를 Vue 프로토타입에 추가
 
 // configure router

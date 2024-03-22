@@ -134,7 +134,6 @@
   </div>
 </template>
 <script>
-import { applySearchFilters, applyExtractOptions, applyPaginatedData } from '../filters.js';
   const headerColumns = ['','', '', '' ,'┌  fulltime',' -----------------┐','┌  shorttime','------------------┐','','']
   const tableColumns = ['Id','customer', 'group', 'Vdn' ,'updateat']
   const tableData = [
@@ -382,16 +381,16 @@ import { applySearchFilters, applyExtractOptions, applyPaginatedData } from '../
         //종속성 : tableData, filterOrder.keyword
         let keywords = [this.filterOrder.customer, this.filterOrder.group, this.filterOrder.keyword];
         const filterProps = ['customer', 'group', 'vdn', 'updateat'];
-        return applySearchFilters(tableData, keywords, filterProps);
+        return this.$filter.applySearchFilters(tableData, keywords, filterProps);
     },
       paginatedData() {
-        return applyPaginatedData(this.searchedData, this.currentPage, this.pageSize);
+        return this.$filter.applyPaginatedData(this.searchedData, this.currentPage, this.pageSize);
       },
       extractCustomers() {
-        return applyExtractOptions(tableData,'customer');
+        return this.$filter.applyExtractOptions(tableData,'customer');
       },
       extractGroups() {
-        return applyExtractOptions(tableData,'group','customer',this.filterOrder.customer);
+        return this.$filter.applyExtractOptions(tableData,'group','customer',this.filterOrder.customer);
       },
     },
     methods : {
