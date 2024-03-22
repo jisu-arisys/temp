@@ -44,13 +44,13 @@
             </l-table>
             <br>
               <div class="col-12 text-center">
-                  <button class="btn btn-success btn-sm" @click="currentPage--">
+                  <button class="btn btn-success btn-sm" @click="currentPage--" :disabled="currentPage === 1">
                     &lt;
                   </button>&nbsp;
                   <button class="btn btn-success btn-sm" @click.stop>
                     {{ currentPage }}
                   </button>&nbsp;
-                  <button class="btn btn-success btn-sm" @click="currentPage++">
+                  <button class="btn btn-success btn-sm" @click="currentPage++" :disabled="currentPage === maxPage">
                     &gt;
                   </button>
               </div>
@@ -344,8 +344,6 @@ import { applySearchFilters, applyExtractOptions, applyPaginatedData } from '../
             group:"",
           keyword:""
         },
-        options:[],
-        optGroups:[],
         pageSize:3,
         currentPage:1,
         expandedRow: null,
@@ -377,6 +375,9 @@ import { applySearchFilters, applyExtractOptions, applyPaginatedData } from '../
       },
     },
     computed:{
+      maxPage(){
+        return Math.ceil(this.searchedData.length / this.pageSize);
+      },
       searchedData() {
         //종속성 : tableData, filterOrder.keyword
         let keywords = [this.filterOrder.customer, this.filterOrder.group, this.filterOrder.keyword];
