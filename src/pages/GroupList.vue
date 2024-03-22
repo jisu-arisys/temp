@@ -11,22 +11,27 @@
               <p class="card-category">등록된 고객사 목록을 표시하고 영업일정을 수정 할 수 있는 페이지.</p>
             </template>
             <div class="d-flex">
-              <div class="col-9 p-2 lg">
+              <div class="col-11 p-2 lg">
                 <label calss="">
                   고객사
                   <select v-model="filterOrder.customer" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
-                    <option v-for="(option, index) in extractCustomers" :key="index" :value="option">{{ option }}</option>
+                    <option v-for="(option, index) in extractCustomers" :key="'customer' +index" :value="option">{{ option || '전체' }}</option>
                   </select>
                 </label>
                 &nbsp;&nbsp;
                 <label>
-                  Ivr그룹
+                  그룹
                   <select v-model="filterOrder.group" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2">
-                    <option v-for="(option, index) in extractGroups" :key="index" :value="option">{{ option }}</option>
+                    <option v-for="(option, index) in extractGroups" :key="'group' +index" :value="option">{{ option || '전체' }}</option>
                   </select>
                 </label>
+                &nbsp;&nbsp;
+                <label>
+                  검색
+                  <input type="text" size="5" v-model="filterOrder.keyword" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2"/>
+                </label>
               </div>
-              <div class="col-3 p-2">
+              <div class="col-1 p-2">
                 <button class="btn float-right btn-success btn-sm" @click="addGroup()">
                     Add
                   </button>
@@ -129,7 +134,7 @@
   </div>
 </template>
 <script>
-
+import { applySearchFilters, applyExtractOptions, applyPaginatedData } from '../filters.js';
   const headerColumns = ['','', '', '' ,'┌  fulltime',' -----------------┐','┌  shorttime','------------------┐','','']
   const tableColumns = ['Id','customer', 'group', 'Vdn' ,'updateat']
   const tableData = [
@@ -336,7 +341,8 @@
         },
         filterOrder: {
           customer: "",
-              group:"",
+            group:"",
+          keyword:""
         },
         options:[],
         optGroups:[],
@@ -346,7 +352,7 @@
         expandedData: null,
       }
     },
-    watch: { //데이터나 속성을 직접 감시하고 특정 동작을 수행하도록 설정
+    watch: {
       currentPage: {
         handler() {
           this.updateTableData();
@@ -354,59 +360,37 @@
         immediate: true
       },
       filterOrder: {
-        handler() {
+        handler(){          
           this.currentPage=1;
           this.updateTableData();
         },
+        customer(){
+          this.resetGroup();
+        },
         deep: true,
       },
-    },
-    computed:{ //종속성 값이 변하면 자동으로 변경이 있는 부분만 재계산, 변하지 않으면 캐싱값 반환.
-      filteredData() {
-        //종속성 : tableData, filterOrder.customer, filterOrder.group
-        if (this.filterOrder.customer===''|| this.filterOrder.customer === '전체'){
-          return tableData;
-        } else if(this.filterOrder.group ==='전체') {
-          return tableData.filter(row => {
-            const customerMatch = this.filterOrder.customer ? row.customer.toLowerCase().includes(this.filterOrder.customer.toLowerCase()) : true;
-            return customerMatch;
-          });
-        } else {
-          return tableData.filter(row => {
-            const customerMatch = this.filterOrder.customer ? row.customer.toLowerCase().includes(this.filterOrder.customer.toLowerCase()) : true;
-            const groupMatch = this.filterOrder.group ? row.group.toLowerCase().includes(this.filterOrder.group.toLowerCase()) : true;
-            
-              return customerMatch && groupMatch;
-          });
-        }
+      'filterOrder.customer': {
+        handler() {
+          //고객사 옵션 변경시 그룹값 리셋
+          this.filterOrder.group="";
+        },
       },
+    },
+    computed:{
+      searchedData() {
+        //종속성 : tableData, filterOrder.keyword
+        let keywords = [this.filterOrder.customer, this.filterOrder.group, this.filterOrder.keyword];
+        const filterProps = ['customer', 'group', 'vdn', 'updateat'];
+        return applySearchFilters(tableData, keywords, filterProps);
+    },
       paginatedData() {
-        // 현재 페이지에 해당하는 데이터만 추출하여 반환합니다.
-        const startIndex = (this.currentPage - 1) * this.pageSize;
-        const endIndex = startIndex + this.pageSize;
-        console.log(this.currentPage, this.pageSize);
-        return this.filteredData.slice(startIndex, endIndex);
+        return applyPaginatedData(this.searchedData, this.currentPage, this.pageSize);
       },
       extractCustomers() {
-        // 옵션 항목을 위해 전체 리스트에서 중복 없는 고객사항목을 추출
-        const customersSet = new Set();
-        tableData.forEach(item => {
-          customersSet.add(item.customer);
-        });
-        const optins =  Array.from(customersSet);
-        optins.push('전체');
-        return optins;
+        return applyExtractOptions(tableData,'customer');
       },
       extractGroups() {
-        // 옵션 항목을 위해 전체 리스트에서 중복 없는 그룹항목을 추출
-          const groupsSet = new Set();
-          tableData.forEach(item => {
-              if (this.filterOrder.customer === item.customer) {
-                groupsSet.add(item.group);}
-              });
-          const optinGroups =  Array.from(groupsSet);
-          optinGroups.push('전체');
-          return optinGroups;
+        return applyExtractOptions(tableData,'group','customer',this.filterOrder.customer);
       },
     },
     methods : {
@@ -414,11 +398,9 @@
         this.table1.data = this.paginatedData;
       },
       togleGroup(item){
-        // 클릭한 행의 데이터를 저장하여 디테일 화면에 출력
-        // 동일한 행 클릭시 토글 기능 구현
+        // 클릭한 행의 데이터를 저장하여 디테일 화면에 출력, 재클릭시 토글 기능 구현
         if (item) { 
           this.expandedData = this.expandedData === item ? null : item;
-          console.log(this.expandedData.id);
         }
       },
       updateHoly(){
@@ -440,15 +422,7 @@
         }
       },
     },
-    created: {
-    // Vue 인스턴스가 생성되고 초기화된 후에 호출
-    // 템플릿이 아직 렌더링되지 않았으며, DOM 요소에 접근할 수 없습니다. 
-    // 데이터를 초기화하거나 비동기 작업을 수행하기에 적합합니다.
-    },
     mounted(){
-      //Vue 인스턴스가 DOM에 마운트된 후에 호출
-      //템플릿이 렌더링되었으며, DOM 요소에 접근할 수 있습니다.
-      //외부 API를 호출하거나 DOM을 조작하는 등의 작업을 수행하기에 적합합니다.
       this.updateTableData();
     }
 }
