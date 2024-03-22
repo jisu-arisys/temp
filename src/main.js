@@ -15,19 +15,14 @@
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
+import dayjs from "dayjs"
 import App from "./App.vue";
 
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
-
-// router setup
 import routes from "./routes/routes";
-
+import store from "./store"
 import "./registerServiceWorker";
-
-//library
-import dayjs from "dayjs"
-
 
 // plugin setup
 Vue.use(VueRouter);
@@ -35,6 +30,7 @@ Vue.use(LightBootstrap);
 
 //configure library
 Vue.prototype.$dayjs = dayjs;
+Vue.prototype.$store = store; // Vuex 스토어를 Vue 프로토타입에 추가
 
 // configure router
 const router = new VueRouter({
@@ -53,6 +49,6 @@ const router = new VueRouter({
 new Vue({
   el: "#app",
   render: (h) => h(App),
-  router,
+  router
 });
 

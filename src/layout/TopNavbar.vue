@@ -40,21 +40,10 @@
           </li>
         </ul> -->
         <ul class="navbar-nav ml-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">
-              Account
-            </a>
+          <li class="nav-item">
+            <a v-if="isLoggedIn">로그인되었습니다. 사용자 ID: {{ userId }}</a>
+            <a v-else>로그인하세요.</a>
           </li>
-          <base-dropdown title="Dropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something</a>
-            <div class="divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </base-dropdown> -->
-          <a>{{ user.name }} 님</a>
           <li class="nav-item">
             <a href="#" class="nav-link">
               Log out
@@ -71,6 +60,13 @@
       routeName () {
         const {name} = this.$route
         return this.capitalizeFirstLetter(name)
+      },
+      isLoggedIn() {
+        console.log("isLoggedIn"+this.$store.getters.isLoggedIn);
+        return this.$store.getters.isLoggedIn;
+      },
+      userId() {
+        return this.$store.getters.userId;
       },
     },
     data () {
