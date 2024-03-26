@@ -24,11 +24,19 @@ import HolyEditForm from 'src/pages/HolyEditForm.vue'
 import HolidaySheduleList from 'src/pages/HolidaySheduleList.vue'
 import ToggleGroup from 'src/pages/test.vue'
 
+import Login from 'src/pages/Login.vue'
 const routes = [
   {
     path: '/',
     component: DashboardLayout,
-    redirect: '/admin/overview'
+    redirect: '/admin/overview',
+    children:[
+      {
+        path: 'login',
+        name: 'Login',
+        component: Login
+      },
+    ]
   },
   {
     path: '/admin',

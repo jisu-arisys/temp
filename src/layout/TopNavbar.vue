@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <!-- <a class="navbar-brand" href="#">Dashboard</a> -->
+      <a class="navbar-brand" href="#">{{routeName}}</a>
       <button type="button"
               class="navbar-toggler navbar-toggler-right"
               :class="{toggled: $sidebar.showSidebar}"
@@ -41,11 +41,11 @@
         </ul> -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a v-if="isLoggedIn">로그인되었습니다. 사용자 ID: {{ userId }}</a>
+            <a v-if="isLoggedIn">{{ userId }}</a>
             <a v-else>로그인하세요.</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a @click="logOut" class="nav-link">
               Log out
             </a>
           </li>
@@ -72,7 +72,6 @@
     data () {
       return {
         activeNotifications: false,
-        user : {name : "admin"}
       }
     },
     methods: {
@@ -90,7 +89,11 @@
       },
       hideSidebar () {
         this.$sidebar.displaySidebar(false)
-      }
+      },
+      logOut(){
+        this.$store.dispatch('logout');
+        this.$router.push("/login");
+      },
     }
   }
 
