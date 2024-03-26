@@ -182,7 +182,7 @@
 
                 <div class="col-md-8">
                 <p v-for="index in 3" :key="index">
-                  {{ expandedData.Tempholidays[index] }}
+                  {{ expandedData.tempholidays[index] }}
                 </p>
                 </div>
               </div>
@@ -204,7 +204,7 @@
     group: 'H1',
     vdn: '36',
     holidays : ['매주 첫째주 월요일','마지막주 수요일','셋째주 화요일'],
-    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     isPublicHoliday: true,
     businessHours: {
       customer: '현대카드',
@@ -237,7 +237,7 @@
     group: 'K1',
     vdn: '45',
     holidays : ['매주 마지막주 금요일','',''],
-    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     isPublicHoliday: true,
     businessHours: {
       customer: 'KB국민카드',
@@ -269,7 +269,7 @@
     group: 'L1',
     vdn: '26',
     holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
-    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -301,7 +301,7 @@
     group: 'B1',
     vdn: '56',
     holidays : ['매주 마지막주 금요일','',''],
-    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -333,7 +333,7 @@
     group: 'A5',
     vdn: '67',
     holidays : ['매주 마지막주 금요일','',''],
-    Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -365,7 +365,7 @@
     group: 'B5',
     vdn: '55',
     holidays : ['','',' '],
-    Tempholidays : ['','',' '],
+    tempholidays : ['','',' '],
     businessHours: {
       customer: 'B사',
       group: 'B5',
@@ -467,16 +467,16 @@
         }
       },
       updateHoly(){
-          console.log("updateHoly :" + this.expandedData.id);
+          // console.log("updateHoly :" + this.expandedData.id);
           this.$router.push("/admin/holytditform/"+this.expandedData.id);
       },
       updateTime(){
-          console.log("updateGroup :" + this.expandedData.id);
+          // console.log("updateGroup :" + this.expandedData.id);
           this.$router.push("/admin/timetditform/"+this.expandedData.id);
       },
       deleteGroup(){
         if(confirm(this.expandedData.id +" " + this.expandedData.customer + "의 " +this.expandedData.group+"를 삭제하시겠습니까?")){
-          console.log("deleteGruop :" + this.expandedData.id);
+          // console.log("deleteGruop :" + this.expandedData.id);
         }
       },
       addGroup(){

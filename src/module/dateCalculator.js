@@ -15,7 +15,7 @@ export default function createCalculator(dayjs){
     const openDate = dayjs(`${date1}T00:00:00`);
     const closeDate = dayjs(`${date2}T00:00:00`);
     const dateDiff = closeDate.diff(openDate,'days');
-    console.log(date1 +'~' +date2 + ':'+ dateDiff);
+    // console.log(date1 +'~' +date2 + ':'+ dateDiff);
     return dateDiff;
   }
   

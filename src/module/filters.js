@@ -30,7 +30,7 @@ export default function createfilters() {
     // 현재 페이지에 해당하는 데이터만 추출하여 반환합니다.
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    console.log(currentPage, pageSize);
+    // console.log(currentPage, pageSize);
     return data.slice(startIndex, endIndex);
   }
 
