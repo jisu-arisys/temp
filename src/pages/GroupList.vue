@@ -2,7 +2,7 @@
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
           <card class="strpied-tabled-with-hover"
                 body-classes="table-full-width table-responsive"
           >
@@ -36,96 +36,157 @@
                     Add
                   </button>
                 </div>
-              </div>
-              <l-table class="table-hover table-striped"
+            </div>
+            <l-table class="table-hover table-striped"
               :columns="table1.columns"
               :data="table1.data"
               @handle="togleGroup">
             </l-table>
             <br>
               <div class="col-12 text-center">
-                  <button class="btn btn-success btn-sm" @click="currentPage--" :disabled="currentPage === 1">
-                    &lt;
-                  </button>&nbsp;
-                  <button class="btn btn-success btn-sm" @click.stop>
-                    {{ currentPage }}
-                  </button>&nbsp;
-                  <button class="btn btn-success btn-sm" @click="currentPage++" :disabled="currentPage === maxPage">
-                    &gt;
-                  </button>
+                <button class="btn btn-success btn-sm" @click="currentPage--" :disabled="currentPage === 1">
+                  &lt;
+                </button>&nbsp;
+                <button class="btn btn-success btn-sm" @click.stop>
+                  {{ currentPage }}
+                </button>&nbsp;
+                <button class="btn btn-success btn-sm" @click="currentPage++" :disabled="currentPage === maxPage">
+                  &gt;
+                </button>
               </div>
-          </card>
-        </div>
-        <div class="col-md-4">          
-          <card>
-            <label>Details</label>
-            <br>
-            <div v-if=expandedData>
-              <table>
-                <tr >
-                  <td><label>Customer</label></td>
-                  <td>{{ expandedData.customer }}</td>
-                </tr>
-                <tr >
-                  <td class="col-1"><label>Group</label></td>
-                  <td class="col-3">{{ expandedData.group }}</td>
-                </tr>
-                <tr>
-                  <td colspan="4"><hr></td>
-                </tr>
-                <tr>
-                  <td><label>영업시간</label></td>
-                  <td><button class="btn float-right btn-warning btn-sm" @click="updateTime()">
-                      Update
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="col-1 "><label>월요일 ~ 금요일</label></td>
-                  <td class="col-2">
-                    <span v-if="expandedData.businessHours.monday.isHoly">휴일</span>
-                    <span v-else-if="expandedData.businessHours.monday.is24">24시간</span>
-                    <span v-else>{{ expandedData.businessHours.monday.openingTime +' ~ '+expandedData.businessHours.monday.closingTime }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="col-1 "><label>토요일</label></td>
-                  <td class="col-3">
-                    <span v-if="expandedData.businessHours.saturday.isHoly">휴일</span>
-                    <span v-else-if="expandedData.businessHours.saturday.is24">24시간</span>
-                    <span v-else>{{ expandedData.businessHours.saturday.openingTime +' ~ '+expandedData.businessHours.saturday.closingTime }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="col-1 "><label>일요일</label></td>
-                  <td class="col-3">
-                    <span v-if="expandedData.businessHours.sunday.isHoly">휴일</span>
-                    <span v-else-if="expandedData.businessHours.sunday.is24">24시간</span>
-                    <span v-else>{{ expandedData.businessHours.sunday.openingTime +' ~ '+expandedData.businessHours.sunday.closingTime }}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="4"><hr></td>
-                </tr>
-                <tr>
-                  <td><label>휴무일</label></td>
-                  <td><button class="btn float-right btn-warning btn-sm" @click="updateHoly()">
+            </card>
+          </div>
+          
+          <div class="col-md-5">          
+            <card>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Details</label>
+                </div>
+                <div class="col-md-8" v-if=expandedData>
+                  <button class="btn float-right btn-danger btn-sm" @click="deleteGroup()">
+                    Delete
+                  </button>
+                </div>
+              </div>
+
+              <div v-if=expandedData>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label>Customer</label>
+                  </div>
+                  <div class="col-md-8">
+                    {{ expandedData.customer }}
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-md-4">
+                    <label>Group</label>
+                  </div>
+                  <div class="col-md-8">
+                    {{ expandedData.group }}
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-12"> <hr> </div>
+                </div>
+                
+                <div class="row">
+                <div class="col-md-4">
+                  <label>영업시간</label>
+                </div>
+                <div class="col-md-8">
+                  <button class="btn float-right btn-warning btn-sm" @click="updateTime()">
                     Update
                   </button>
-                </td>
-              </tr>
-              <tr v-for="index in 3" :key="index">
-                <td class="col-4">{{ expandedData.holidays[index] }}&nbsp;</td>
-              </tr>
-              <tr>
-              </tr>
-              <tr>
-                <td><label>임시휴일</label></td>
-              </tr>
-              <tr v-for="index in 3" :key="index">
-                <td class="col-4">{{ expandedData.Tempholidays[index] }}&nbsp;</td>
-              </tr>
-              </table>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <label>월요일 ~ 금요일</label>
+                </div>
+                <div class="col-md-8">
+                  <span v-if="expandedData.businessHours.monday.isHoly">휴일</span>
+                  <span v-else-if="expandedData.businessHours.monday.is24">24시간</span>
+                  <span v-else>{{ expandedData.businessHours.monday.openingTime +' ~ '+expandedData.businessHours.monday.closingTime }}</span>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-4">
+                  <label>토요일</label>
+                </div>
+                <div class="col-md-8">
+                  <span v-if="expandedData.businessHours.saturday.isHoly">휴일</span>
+                  <span v-else-if="expandedData.businessHours.saturday.is24">24시간</span>
+                  <span v-else>{{ expandedData.businessHours.saturday.openingTime +' ~ '+expandedData.businessHours.saturday.closingTime }}</span>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-4">
+                  <label>일요일</label>
+                </div>
+                <div class="col-md-8">
+                  <span v-if="expandedData.businessHours.monday.isHoly">휴일</span>
+                  <span v-else-if="expandedData.businessHours.monday.is24">24시간</span>
+                  <span v-else>{{ expandedData.businessHours.monday.openingTime +' ~ '+expandedData.businessHours.monday.closingTime }}</span>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-12"> <hr> </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <label>휴일</label>
+                </div>
+                <div class="col-md-8">
+                  <button class="btn float-right btn-warning btn-sm" @click="updateHoly()">
+                    Update
+                  </button>
+                </div>
+              </div>
+              
+              
+              <div class="row">
+                <div class="col-md-4">
+                  <label>공휴일 여부</label>
+                </div>
+                <div class="col-md-8">
+                  <span>
+                    {{ expandedData.isPublicHoliday }}
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>정기휴일</label>
+                </div>
+
+                <div class="col-md-8">
+                  <p class="my-2" v-for="(item,index) in expandedData.holidays" :key="'holy'+index">
+                    {{ item }}
+                  </p>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-4">
+                  <label>임시휴일</label>
+                </div>
+
+                <div class="col-md-8">
+                <p v-for="index in 3" :key="index">
+                  {{ expandedData.Tempholidays[index] }}
+                </p>
+                </div>
+              </div>
+
             </div>
           </card>
         </div>
@@ -142,8 +203,9 @@
     customer: '현대카드',
     group: 'H1',
     vdn: '36',
-    holidays : ['매주 첫째주 월요일','매주 마지막주 수요일',' '],
+    holidays : ['매주 첫째주 월요일','마지막주 수요일','셋째주 화요일'],
     Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    isPublicHoliday: true,
     businessHours: {
       customer: '현대카드',
       group: 'H1',
@@ -176,6 +238,7 @@
     vdn: '45',
     holidays : ['매주 마지막주 금요일','',''],
     Tempholidays : ['2024-02-11 월요일','2024-02-13 수요일',' '],
+    isPublicHoliday: true,
     businessHours: {
       customer: 'KB국민카드',
       group: 'K1',
@@ -411,9 +474,9 @@
           console.log("updateGroup :" + this.expandedData.id);
           this.$router.push("/admin/timetditform/"+this.expandedData.id);
       },
-      deleteGroup(row){
-        if(confirm(row.id +" " + row.vdn + "를 삭제하시겠습니까?")){
-          console.log("deleteGruop :" + row.id);
+      deleteGroup(){
+        if(confirm(this.expandedData.id +" " + this.expandedData.customer + "의 " +this.expandedData.group+"를 삭제하시겠습니까?")){
+          console.log("deleteGruop :" + this.expandedData.id);
         }
       },
       addGroup(){

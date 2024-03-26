@@ -11,6 +11,13 @@ export default function createCalculator(dayjs){
     // console.log(time1 +'~' +time2 + ':'+ timeDiff);
     return timeDiff;
   }
+  function applyDateDiff(date1,date2) {
+    const openDate = dayjs(`${date1}T00:00:00`);
+    const closeDate = dayjs(`${date2}T00:00:00`);
+    const dateDiff = closeDate.diff(openDate,'days');
+    console.log(date1 +'~' +date2 + ':'+ dateDiff);
+    return dateDiff;
+  }
   
   function applyExtractDayOfWeek(date) {
     const dayOfWeek = dayjs(date).format('ddd');
@@ -18,7 +25,7 @@ export default function createCalculator(dayjs){
     return dayOfWeek;
   }
 
-  return { applyTimeDiff, applyExtractDayOfWeek };
+  return { applyTimeDiff, applyExtractDayOfWeek, applyDateDiff };
 }
 
 
